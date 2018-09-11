@@ -3,7 +3,7 @@ distribution contains an "examples" subdirectory with a slew of
 example main programs you can compile and run.  They each illustrate
 different ways you might want to run Pythia. It's a bit overwhelming.
 There's one, main42.cc, that covers a pretty broad range of how we in
-PHENIX might want to use Pythia.  It reads its configuration from an
+sPHENIX might want to use Pythia.  It reads its configuration from an
 input file and writes a HepMC formatted file as output. 
 
 This collection of code just packages up main42.cc so that it can be
