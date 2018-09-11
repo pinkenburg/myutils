@@ -1,0 +1,18 @@
+Pythia8 is a rather different than Pythia6.  The Pythia8 source
+distribution contains an "examples" subdirectory with a slew of
+example main programs you can compile and run.  They each illustrate
+different ways you might want to run Pythia. It's a bit overwhelming.
+There's one, main42.cc, that covers a pretty broad range of how we in
+PHENIX might want to use Pythia.  It reads its configuration from an
+input file and writes a HepMC formatted file as output. 
+
+This collection of code just packages up main42.cc so that it can be
+compiled and run straightforwardly.  The file pythia8_parameters lists
+all of the available things you can change in the Pythia8 input file.
+The file example_input shows one example of what you might do.  When
+Pythia8 runs, it needs to be able to find a bunch of XML documents
+that, in the Pythia8 distribution, is in the subdirectory xmldoc.  Set
+the environment variable "PYTHIA8DATA" to point to this directory.
+
+Other than that, it's just autogen.sh, make, make install.
+

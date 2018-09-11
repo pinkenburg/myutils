@@ -1,0 +1,7 @@
+Beams:eCM = 200.
+Beams:idA = 2212
+Beams:idB = 2212
+Main:numberOfEvents = 10
+HardQCD:all = on
+PhaseSpace:pTHatMin = 20.
+PhaseSpace:pTHatMax = 100.
