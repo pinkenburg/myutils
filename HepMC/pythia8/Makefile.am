@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 
-INCLUDES = -I$(includedir) -I$(OFFLINE_MAIN)/include -I$(OFFLINE_MAIN)/include/Pythia8 -I$(OFFLINE_MAIN)/include/HepMC
+AM_CPPFLAGS = -I$(includedir) -I$(OFFLINE_MAIN)/include -I$(OFFLINE_MAIN)/include/Pythia8 -I$(OFFLINE_MAIN)/include/HepMC
 
 AM_LDFLAGS = -L$(libdir) -L$(OFFLINE_MAIN)/lib
 

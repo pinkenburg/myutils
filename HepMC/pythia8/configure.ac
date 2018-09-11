@@ -1,9 +1,10 @@
-AC_INIT(configure.in)
+AC_INIT(pythia8HepMC, [1.0])
+AC_CONFIG_SRCDIR([configure.ac])
 
-AM_INIT_AUTOMAKE(pythia8HepMC, 1.00)
+AM_INIT_AUTOMAKE
 
 AC_PROG_CXX(CC g++)
-AC_PROG_LIBTOOL
+LT_INIT([disable-static])
 
 if test $ac_cv_prog_gxx = yes; then
   CXXFLAGS="$CXXFLAGS -Wall -pthread -Werror"
