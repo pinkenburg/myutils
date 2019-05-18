@@ -23,12 +23,18 @@ libmemsizetest_la_LIBADD = \
 pkginclude_HEADERS = \
   GenerateHits.h \
   GenerateRootHits.h \
+  GenerateRootTCHits.h \
+  GenerateRootTMapHits.h \
   MyRootContainer.h \
+  MyRootTCContainer.h \
+  MyRootTMapContainer.h \
   MyRootHit.h \
   MyRootHitv1.h
 
 ROOTDICTS = \
   MyRootContainer_Dict.cc \
+  MyRootTCContainer_Dict.cc \
+  MyRootTMapContainer_Dict.cc \
   MyRootHit_Dict.cc \
   MyRootHitv1_Dict.cc
 
@@ -36,11 +42,15 @@ if MAKEROOT6
   pcmdir = $(libdir)
   nobase_dist_pcm_DATA = \
     MyRootContainer_Dict_rdict.pcm \
+    MyRootTCContainer_Dict_rdict.pcm \
+    MyRootTMapContainer_Dict_rdict.pcm \
     MyRootHit_Dict_rdict.pcm \
     MyRootHitv1_Dict_rdict.pcm
 else
   ROOT5_DICTS = \
     GenerateRootHits_Dict.cc
+    GenerateRootTCHits_Dict.cc
+    GenerateRootTMapHits_Dict.cc
 endif
 
 libmemsizetest_la_SOURCES = \
@@ -48,7 +58,11 @@ libmemsizetest_la_SOURCES = \
   $(ROOT5_DICTS) \
   GenerateHits.cc \
   GenerateRootHits.cc \
+  GenerateRootTCHits.cc \
+  GenerateRootTMapHits.cc \
   MyRootContainer.cc \
+  MyRootTCContainer.cc \
+  MyRootTMapContainer.cc \
   MyRootHitv1.cc \
   MyContainer.cc \
   MyHitv1.cc

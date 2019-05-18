@@ -7,6 +7,8 @@
 
 #include <memsizetest/GenerateHits.h>
 #include <memsizetest/GenerateRootHits.h>
+#include <memsizetest/GenerateRootTCHits.h>
+#include <memsizetest/GenerateRootTMapHits.h>
 
 #include <phool/recoConsts.h>
 
@@ -29,11 +31,11 @@ void Fun4All_MemTest(const int nevnt = 10)
     Fun4AllInputManager *in = new Fun4AllDummyInputManager("JADE");
     se->registerInputManager(in);
 
-    Fun4AllDstOutputManager *out = new Fun4AllDstOutputManager("DSTOUT", "genhits.root");
+//    Fun4AllDstOutputManager *out = new Fun4AllDstOutputManager("DSTOUT", "genhits.root");
   // if (do_dst_compress) DstCompress(out);
-    se->registerOutputManager(out);
+//    se->registerOutputManager(out);
     se->run(nevnt);
-
+//    return;
     se->End();
     delete se;
     gSystem->Exit(0);
