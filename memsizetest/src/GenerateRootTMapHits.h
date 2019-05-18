@@ -1,5 +1,5 @@
-#ifndef MYUTILS_GENERATEROOTHITS_H
-#define MYUTILS_GENERATEROOTHITS_H
+#ifndef MYUTILS_GENERATEROOTTMAPHITS_H
+#define MYUTILS_GENERATEROOTTMAPHITS_H
 
 #include <fun4all/SubsysReco.h>
 
@@ -10,15 +10,15 @@
 
 class PHCompositeNode;
 
-/// \class GenerateRootHits
+/// \class GenerateRootTMapHits
 ///
 /// \brief simple truth vertex smearing algorithm
 ///
-class GenerateRootHits : public SubsysReco
+class GenerateRootTMapHits : public SubsysReco
 {
  public:
-  GenerateRootHits(const std::string &name = "GenerateRootHits");
-  virtual ~GenerateRootHits();
+  GenerateRootTMapHits(const std::string &name = "GenerateRootTMapHits");
+  virtual ~GenerateRootTMapHits();
 
   int Init(PHCompositeNode *topNode);
   int InitRun(PHCompositeNode *topNode);
