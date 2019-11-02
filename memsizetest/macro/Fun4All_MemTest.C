@@ -6,8 +6,13 @@
 #include <fun4all/Fun4AllDstOutputManager.h>
 
 #include <memsizetest/GenerateHits.h>
+#include <memsizetest/GenerateHitsPropMap.h>
 #include <memsizetest/GenerateRootHits.h>
+#include <memsizetest/GenerateRootVectorHits.h>
+#include <memsizetest/GenerateRootHitsPropMap.h>
 #include <memsizetest/GenerateRootTCHits.h>
+#include <memsizetest/GenerateRootTObjHits.h>
+#include <memsizetest/GenerateMultRootTObjHits.h>
 #include <memsizetest/GenerateRootTMapHits.h>
 
 #include <phool/recoConsts.h>
@@ -25,15 +30,20 @@ void Fun4All_MemTest(const int nevnt = 10)
   recoConsts *rc = recoConsts::instance();
     rc->set_IntFlag("RANDOMSEED", 12345);
 
-    SubsysReco *genhits = new GenerateRootHits();
+//    SubsysReco *genhits = new GenerateRootVectorHits();
+//    SubsysReco *genhits = new GenerateRootHitsPropMap();
+//   SubsysReco *genhits = new GenerateRootHits();
+//   SubsysReco *genhits = new GenerateRootTObjHits();
+   GenerateMultRootTObjHits *genhits = new GenerateMultRootTObjHits();
+   genhits->SetNumObject(10);
     se->registerSubsystem(genhits);
 
     Fun4AllInputManager *in = new Fun4AllDummyInputManager("JADE");
     se->registerInputManager(in);
 
-//    Fun4AllDstOutputManager *out = new Fun4AllDstOutputManager("DSTOUT", "genhits.root");
+    Fun4AllDstOutputManager *out = new Fun4AllDstOutputManager("DSTOUT", "genhits.root");
   // if (do_dst_compress) DstCompress(out);
-//    se->registerOutputManager(out);
+    se->registerOutputManager(out);
     se->run(nevnt);
 //    return;
     se->End();

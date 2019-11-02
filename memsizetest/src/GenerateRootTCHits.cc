@@ -76,6 +76,13 @@ int GenerateRootTCHits::process_event(PHCompositeNode *topNode)
   {
     MyRootHit *m_Hit = new MyRootHitv1();
     m_Hit->set_key(j);
+    for (int i=0; i<2; i++)
+    {
+      m_Hit->set_x(gsl_rng_uniform_pos(RandomGenerator),gsl_rng_uniform_pos(RandomGenerator));
+      m_Hit->set_y(gsl_rng_uniform_pos(RandomGenerator),gsl_rng_uniform_pos(RandomGenerator));
+      m_Hit->set_z(gsl_rng_uniform_pos(RandomGenerator),gsl_rng_uniform_pos(RandomGenerator));
+      m_Hit->set_t(gsl_rng_uniform_pos(RandomGenerator),gsl_rng_uniform_pos(RandomGenerator));
+    }
     m_Hit->add_edep(gsl_rng_uniform_pos(RandomGenerator),
 gsl_rng_uniform_pos(RandomGenerator),
 gsl_rng_uniform_pos(RandomGenerator));
