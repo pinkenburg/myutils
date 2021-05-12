@@ -36,21 +36,15 @@ class fixdstpass1 : public SubsysReco
    */
   int process_event(PHCompositeNode *topNode) override;
 
-  /// Clean up internals after each event.
-  int ResetEvent(PHCompositeNode *topNode) override;
-
-  /// Called at the end of each run.
-  int EndRun(const int runnumber) override;
-
   /// Called at the end of all processing.
   int End(PHCompositeNode *topNode) override;
 
-  /// Reset
-  int Reset(PHCompositeNode * /*topNode*/) override;
-
-  void Print(const std::string &what = "ALL") const override;
-
  private:
+
+  std::string trkhitnodename = "TRKR_HITSET";
+  std::string trkhittmpnodename = "TRKR_HITSET_TMP";
+  std::string trkclusassocname = "TRKR_CLUSTERHITASSOC";
+  std::string trkclusassoctmpname = "TRKR_CLUSTERHITASSOC_TMP";
 };
 
 #endif // FIXDSTPASS1_H

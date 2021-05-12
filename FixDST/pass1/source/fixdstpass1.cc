@@ -1,136 +1,161 @@
-//____________________________________________________________________________..
-//
-// This is a template for a Fun4All SubsysReco module with all methods from the
-// $OFFLINE_MAIN/include/fun4all/SubsysReco.h baseclass
-// You do not have to implement all of them, you can just remove unused methods
-// here and in fixdstpass1.h.
-//
-// fixdstpass1(const std::string &name = "fixdstpass1")
-// everything is keyed to fixdstpass1, duplicate names do work but it makes
-// e.g. finding culprits in logs difficult or getting a pointer to the module
-// from the command line
-//
-// fixdstpass1::~fixdstpass1()
-// this is called when the Fun4AllServer is deleted at the end of running. Be
-// mindful what you delete - you do loose ownership of object you put on the node tree
-//
-// int fixdstpass1::Init(PHCompositeNode *topNode)
-// This method is called when the module is registered with the Fun4AllServer. You
-// can create historgrams here or put objects on the node tree but be aware that
-// modules which haven't been registered yet did not put antyhing on the node tree
-//
-// int fixdstpass1::InitRun(PHCompositeNode *topNode)
-// This method is called when the first event is read (or generated). At
-// this point the run number is known (which is mainly interesting for raw data
-// processing). Also all objects are on the node tree in case your module's action
-// depends on what else is around. Last chance to put nodes under the DST Node
-// We mix events during readback if branches are added after the first event
-//
-// int fixdstpass1::process_event(PHCompositeNode *topNode)
-// called for every event. Return codes trigger actions, you find them in
-// $OFFLINE_MAIN/include/fun4all/Fun4AllReturnCodes.h
-//   everything is good:
-//     return Fun4AllReturnCodes::EVENT_OK
-//   abort event reconstruction, clear everything and process next event:
-//     return Fun4AllReturnCodes::ABORT_EVENT; 
-//   proceed but do not save this event in output (needs output manager setting):
-//     return Fun4AllReturnCodes::DISCARD_EVENT; 
-//   abort processing:
-//     return Fun4AllReturnCodes::ABORT_RUN
-// all other integers will lead to an error and abort of processing
-//
-// int fixdstpass1::ResetEvent(PHCompositeNode *topNode)
-// If you have internal data structures (arrays, stl containers) which needs clearing
-// after each event, this is the place to do that. The nodes under the DST node are cleared
-// by the framework
-//
-// int fixdstpass1::EndRun(const int runnumber)
-// This method is called at the end of a run when an event from a new run is
-// encountered. Useful when analyzing multiple runs (raw data). Also called at
-// the end of processing (before the End() method)
-//
-// int fixdstpass1::End(PHCompositeNode *topNode)
-// This is called at the end of processing. It needs to be called by the macro
-// by Fun4AllServer::End(), so do not forget this in your macro
-//
-// int fixdstpass1::Reset(PHCompositeNode *topNode)
-// not really used - it is called before the dtor is called
-//
-// void fixdstpass1::Print(const std::string &what) const
-// Called from the command line - useful to print information when you need it
-//
-//____________________________________________________________________________..
 
 #include "fixdstpass1.h"
+
+#include "TrkrHitTmp.h"
+#include "TrkrHitSetTmp.h"
+#include "TrkrHitSetContainerTmp.h"
+#include "TrkrClusterHitAssocTmp.h"
+
+#include "TpcHitTmp.h"
+#include "MvtxHitTmp.h"
+#include "InttHitTmp.h"
+
+
+#include <trackbase/TrkrHit.h>
+#include <trackbase/TrkrHitSet.h>
+#include <trackbase/TrkrHitSetContainer.h>
+
+#include <trackbase/TrkrClusterHitAssoc.h>
+
+#include <mvtx/MvtxHit.h>
+#include <intt/InttHit.h>
+#include <tpc/TpcHit.h>
 
 #include <fun4all/Fun4AllReturnCodes.h>
 
 #include <phool/PHCompositeNode.h>
+#include <phool/getClass.h>
+#include <phool/PHNodeIterator.h>
+
 
 //____________________________________________________________________________..
 fixdstpass1::fixdstpass1(const std::string &name):
  SubsysReco(name)
 {
-  std::cout << "fixdstpass1::fixdstpass1(const std::string &name) Calling ctor" << std::endl;
 }
 
 //____________________________________________________________________________..
 fixdstpass1::~fixdstpass1()
 {
-  std::cout << "fixdstpass1::~fixdstpass1() Calling dtor" << std::endl;
 }
 
 //____________________________________________________________________________..
 int fixdstpass1::Init(PHCompositeNode *topNode)
 {
-  std::cout << "fixdstpass1::Init(PHCompositeNode *topNode) Initializing" << std::endl;
+  PHNodeIterator iter(topNode);
+
+  // Looking for the DST node
+  PHCompositeNode *dstNode = dynamic_cast<PHCompositeNode *>(iter.findFirst("PHCompositeNode", "DST"));
+  if (!dstNode)
+  {
+    std::cout << PHWHERE << "DST Node missing, doing nothing." << std::endl;
+    exit(1);
+  }
+  TrkrHitSetContainerTmp *hitsetcontainertmp = findNode::getClass<TrkrHitSetContainerTmp>(topNode,trkhittmpnodename);
+  if (! hitsetcontainertmp)
+  {
+    hitsetcontainertmp = new TrkrHitSetContainerTmp();
+    auto newNode = new PHIODataNode<PHObject>(hitsetcontainertmp, trkhittmpnodename, "PHObject");
+    dstNode->addNode(newNode);
+  }
+  TrkrClusterHitAssocTmp *clusterhitassoc = findNode::getClass<TrkrClusterHitAssocTmp>(topNode,trkclusassoctmpname);
+  if (!clusterhitassoc)
+  {
+    clusterhitassoc = new TrkrClusterHitAssocTmp();
+    auto newNode = new PHIODataNode<PHObject>(clusterhitassoc, trkclusassoctmpname, "PHObject");
+    dstNode->addNode(newNode);
+
+  }
   return Fun4AllReturnCodes::EVENT_OK;
 }
 
 //____________________________________________________________________________..
 int fixdstpass1::InitRun(PHCompositeNode *topNode)
 {
-  std::cout << "fixdstpass1::InitRun(PHCompositeNode *topNode) Initializing for Run XXX" << std::endl;
+  
+
   return Fun4AllReturnCodes::EVENT_OK;
 }
 
 //____________________________________________________________________________..
 int fixdstpass1::process_event(PHCompositeNode *topNode)
 {
-  std::cout << "fixdstpass1::process_event(PHCompositeNode *topNode) Processing Event" << std::endl;
-  return Fun4AllReturnCodes::EVENT_OK;
-}
+  TrkrClusterHitAssocTmp *clusterhitassoctmp = findNode::getClass<TrkrClusterHitAssocTmp>(topNode,trkclusassoctmpname);
+  TrkrClusterHitAssoc *clusterhitassoc = findNode::getClass<TrkrClusterHitAssoc>(topNode,trkclusassocname);
+  if (clusterhitassoctmp && clusterhitassoc)
+  {
+    TrkrClusterHitAssoc::ConstRange rng = clusterhitassoc->getHits();
+    for (TrkrClusterHitAssoc::ConstIterator iter = rng.first; iter != rng.second; ++iter)
+    {
+      clusterhitassoctmp->addAssoc(iter->first,iter->second);
+    }
+  }
 
-//____________________________________________________________________________..
-int fixdstpass1::ResetEvent(PHCompositeNode *topNode)
-{
-  std::cout << "fixdstpass1::ResetEvent(PHCompositeNode *topNode) Resetting internal structures, prepare for next event" << std::endl;
-  return Fun4AllReturnCodes::EVENT_OK;
-}
+  TrkrHitSetContainerTmp *hitsetcontainertmp = findNode::getClass<TrkrHitSetContainerTmp>(topNode,trkhittmpnodename);
+  TrkrHitSetContainer *hitsetcontainer = findNode::getClass<TrkrHitSetContainer>(topNode,trkhitnodename);
+  if (hitsetcontainertmp && hitsetcontainer)
+  {
+    TrkrHitSetContainer::ConstRange hitsetrange = hitsetcontainer->getHitSets();
+    for (TrkrHitSetContainer::ConstIterator iter = hitsetrange.first; iter != hitsetrange.second; ++iter)
+    {
+//      TrkrDefs::hitsetkey node_hitsetkey = iter->first;
+      TrkrHitSet *hitset = iter->second;
+//      std::cout << hitset << node_hitsetkey << std::endl;
+      TrkrHitSetTmp *hitsettmp = new TrkrHitSetTmp();
+      hitsettmp->setHitSetKey(hitset->getHitSetKey());
+      hitsetcontainertmp->addHitSetSpecifyKey(hitsettmp->getHitSetKey(),hitsettmp);
+      TrkrHitSet::ConstRange single_hit_range = hitset->getHits();
+      for (TrkrHitSet::ConstIterator single_hit_iter = single_hit_range.first;
+	   single_hit_iter != single_hit_range.second;
+	   ++single_hit_iter)
+      {
+	TrkrDefs::hitkey key = single_hit_iter->first;
+	TrkrHit *trkhit = single_hit_iter->second;
+	TpcHit *tpchit = dynamic_cast<TpcHit *>(trkhit);
+	TrkrHitTmp *trkhittmp = nullptr;
+	if (tpchit)
+	{
+//	  std::cout << std::hex << key <<  std::dec << " is tpc hit" << std::endl;
+	  trkhittmp = new TpcHitTmp();
+	}
+	else
+	{
+          InttHit *intthit = dynamic_cast<InttHit *>(trkhit);
+	  if (intthit)
+	  {
+//	    std::cout << std::hex << key <<  std::dec << " is intt hit" << std::endl;
+	    trkhittmp = new InttHitTmp();
+	  }
+	  else
+	  {
+	    MvtxHit *mvtxhit = dynamic_cast<MvtxHit *>(trkhit);
+	    if (mvtxhit)
+	    {
+//	    std::cout << std::hex << key <<  std::dec << " is mvtx hit" << std::endl;
+	      trkhittmp = new MvtxHitTmp();
+	    }
+	  }
+	}
+	if (! trkhittmp)
+	{
+           // micromegas has no separate base class
+//	  std::cout << std::hex << "0x" << key <<  std::dec << " NO tpc/intt hit" << std::endl;
+	  trkhittmp = new TrkrHitTmp();
+	}
+	trkhittmp->addEnergy(trkhit->getEnergy());
+        trkhittmp->setAdc(trkhit->getAdc());
+	hitsettmp->addHitSpecificKey(key, trkhittmp);
+      }
 
-//____________________________________________________________________________..
-int fixdstpass1::EndRun(const int runnumber)
-{
-  std::cout << "fixdstpass1::EndRun(const int runnumber) Ending Run for Run " << runnumber << std::endl;
+//	std::cout << key << trkhit << std::endl;
+    }
+  }
   return Fun4AllReturnCodes::EVENT_OK;
 }
 
 //____________________________________________________________________________..
 int fixdstpass1::End(PHCompositeNode *topNode)
 {
-  std::cout << "fixdstpass1::End(PHCompositeNode *topNode) This is the End..." << std::endl;
   return Fun4AllReturnCodes::EVENT_OK;
 }
 
-//____________________________________________________________________________..
-int fixdstpass1::Reset(PHCompositeNode *topNode)
-{
- std::cout << "fixdstpass1::Reset(PHCompositeNode *topNode) being Reset" << std::endl;
-  return Fun4AllReturnCodes::EVENT_OK;
-}
-
-//____________________________________________________________________________..
-void fixdstpass1::Print(const std::string &what) const
-{
-  std::cout << "fixdstpass1::Print(const std::string &what) const Printing info for " << what << std::endl;
-}
