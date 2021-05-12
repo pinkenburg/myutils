@@ -28,7 +28,7 @@ TrkrClusterHitAssocTmp::Reset()
 void 
 TrkrClusterHitAssocTmp::identify(std::ostream &os) const
 {
-  os << "-----TrkrClusterHitAssocTmp-----" << std::endl;
+  os << "-----TrkrClusterHitAssoc-----" << std::endl;
   os << "Number of associations: " << m_map.size() << std::endl;
 
   for ( auto& entry : m_map )
@@ -50,11 +50,20 @@ TrkrClusterHitAssocTmp::addAssoc(TrkrDefs::cluskey ckey, unsigned int hidx)
   m_map.insert(std::make_pair(ckey, hidx));
 }
 
-TrkrClusterHitAssocTmp::ConstRange 
+TrkrClusterHitAssocTmp::ConstRange
 TrkrClusterHitAssocTmp::getHits(TrkrDefs::cluskey ckey)
 {
   ConstRange retpair;
   retpair.first = m_map.lower_bound(ckey);
   retpair.second = m_map.upper_bound(ckey);
+  return retpair;
+}
+
+TrkrClusterHitAssocTmp::ConstRange
+TrkrClusterHitAssocTmp::getHits()
+{
+  ConstRange retpair;
+  retpair.first = m_map.begin();
+  retpair.second = m_map.end();
   return retpair;
 }

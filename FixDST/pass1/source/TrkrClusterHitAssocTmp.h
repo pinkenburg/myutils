@@ -51,6 +51,7 @@ public:
    * @param[out] Range over hits associated with @c ckey
    */
   ConstRange getHits(TrkrDefs::cluskey ckey);
+  ConstRange getHits();
 
 private:
   MMap m_map;
