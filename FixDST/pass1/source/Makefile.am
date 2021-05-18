@@ -62,7 +62,8 @@ libfixdstpass1_la_SOURCES = \
 libfixdstpass1_la_LIBADD = \
   -lphool \
   -lSubsysReco \
-  -ltrack_io
+  -ltrack_io \
+  -ltrack_reco_io
 
 # Rule for generating table CINT dictionaries.
 %_Dict.cc: %.h %LinkDef.h

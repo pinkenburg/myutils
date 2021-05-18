@@ -1,6 +1,8 @@
 
 #include "fixdstpass1.h"
 
+#include "AssocInfoContainerTmp.h"
+
 #include "TrkrHitTmp.h"
 #include "TrkrHitSetTmp.h"
 #include "TrkrHitSetContainerTmp.h"
@@ -20,6 +22,8 @@
 #include <trackbase/TrkrClusterHitAssoc.h>
 
 #include <trackbase/TrkrHitTruthAssoc.h>
+
+#include <trackreco/AssocInfoContainer.h>
 
 #include <fun4all/Fun4AllReturnCodes.h>
 
@@ -66,11 +70,11 @@ int fixdstpass1::Init(PHCompositeNode *topNode)
     dstNode->addNode(newNode);
   }
 
-  TrkrClusterContainerTmp *clustercon = findNode::getClass<TrkrClusterContainerTmp>(topNode,trkclusassoctmpname);
+  TrkrClusterContainerTmp *clustercon = findNode::getClass<TrkrClusterContainerTmp>(topNode,trkclusconttmpname);
 if (!clustercon)
 {
   clustercon = new TrkrClusterContainerTmp();
-  auto newNode = new PHIODataNode<PHObject>(clustercon,trkclusassoctmpname, "PHObject");
+  auto newNode = new PHIODataNode<PHObject>(clustercon,trkclusconttmpname, "PHObject");
 dstNode->addNode(newNode);
 }
   TrkrClusterHitAssocTmp *clusterhitassoc = findNode::getClass<TrkrClusterHitAssocTmp>(topNode,trkclusassoctmpname);
@@ -78,6 +82,15 @@ dstNode->addNode(newNode);
   {
     clusterhitassoc = new TrkrClusterHitAssocTmp();
     auto newNode = new PHIODataNode<PHObject>(clusterhitassoc, trkclusassoctmpname, "PHObject");
+    dstNode->addNode(newNode);
+
+  }
+
+  AssocInfoContainerTmp *assoc = findNode::getClass<AssocInfoContainerTmp>(topNode,assoctmpname);
+  if (! assoc)
+  {
+    assoc = new AssocInfoContainerTmp();
+    auto newNode = new PHIODataNode<PHObject>(assoc, assoctmpname, "PHObject");
     dstNode->addNode(newNode);
 
   }
@@ -146,6 +159,20 @@ if (clustercontmp && clustercon)
 //	std::cout << key << trkhit << std::endl;
     }
   }
+
+  AssocInfoContainerTmp *assoctmp = findNode::getClass<AssocInfoContainerTmp>(topNode,assoctmpname);
+  AssocInfoContainer *assoc = findNode::getClass<AssocInfoContainer>(topNode,assocname);
+
+  if (assoc && assoctmp)
+  {
+    AssocInfoContainer::ConstRange assocrange = assoc->GetAssoc();
+    for (AssocInfoContainer::ConstIterator iter = assocrange.first; iter != assocrange.second; ++iter)
+    {
+      assoctmp->SetClusterTrackAssoc(iter->first, iter->second);
+    }
+  }
+  assoctmp->identify();
+  assoc->identify();
   return Fun4AllReturnCodes::EVENT_OK;
 }
 
