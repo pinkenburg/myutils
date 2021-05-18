@@ -171,8 +171,6 @@ if (clustercontmp && clustercon)
       assoctmp->SetClusterTrackAssoc(iter->first, iter->second);
     }
   }
-  assoctmp->identify();
-  assoc->identify();
   return Fun4AllReturnCodes::EVENT_OK;
 }
 
