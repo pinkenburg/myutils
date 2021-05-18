@@ -62,6 +62,7 @@ int fixdstpass1::Init(PHCompositeNode *topNode)
     auto newNode = new PHIODataNode<PHObject>(hitsetcontainertmp, trkhittmpnodename, "PHObject");
     dstNode->addNode(newNode);
   }
+
   TrkrHitTruthAssocTmp *hittruthassoctmp = findNode::getClass<TrkrHitTruthAssocTmp>(topNode,trkhitassoctmpname);
   if (!hittruthassoctmp)
   {
@@ -108,8 +109,8 @@ int fixdstpass1::InitRun(PHCompositeNode *topNode)
 //____________________________________________________________________________..
 int fixdstpass1::process_event(PHCompositeNode *topNode)
 {
-TrkrClusterContainerTmp *clustercontmp = findNode::getClass<TrkrClusterContainerTmp>(topNode,trkclusassoctmpname);
-TrkrClusterContainer *clustercon = findNode::getClass<TrkrClusterContainer>(topNode,trkclusassocname);
+TrkrClusterContainerTmp *clustercontmp = findNode::getClass<TrkrClusterContainerTmp>(topNode,trkclusconttmpname);
+TrkrClusterContainer *clustercon = findNode::getClass<TrkrClusterContainer>(topNode,trkcluscontname);
 if (clustercontmp && clustercon)
 {
   TrkrClusterContainer::ConstRange rng = clustercon->getClusters();
@@ -119,6 +120,7 @@ if (clustercontmp && clustercon)
     clustercontmp->addClusterSpecifyKey(clus->getClusKey(),clus);
   }
 }
+
   TrkrClusterHitAssocTmp *clusterhitassoctmp = findNode::getClass<TrkrClusterHitAssocTmp>(topNode,trkclusassoctmpname);
   TrkrClusterHitAssoc *clusterhitassoc = findNode::getClass<TrkrClusterHitAssoc>(topNode,trkclusassocname);
   if (clusterhitassoctmp && clusterhitassoc)
@@ -126,10 +128,10 @@ if (clustercontmp && clustercon)
     TrkrClusterHitAssoc::ConstRange rng = clusterhitassoc->getHits();
     for (TrkrClusterHitAssoc::ConstIterator iter = rng.first; iter != rng.second; ++iter)
     {
+//      std::cout << "adding " << iter->first << ", " << iter->second << std::endl;
       clusterhitassoctmp->addAssoc(iter->first,iter->second);
     }
   }
-
   TrkrHitSetContainerTmp *hitsetcontainertmp = findNode::getClass<TrkrHitSetContainerTmp>(topNode,trkhittmpnodename);
   TrkrHitSetContainer *hitsetcontainer = findNode::getClass<TrkrHitSetContainer>(topNode,trkhitnodename);
   if (hitsetcontainertmp && hitsetcontainer)
@@ -169,6 +171,17 @@ if (clustercontmp && clustercon)
     for (AssocInfoContainer::ConstIterator iter = assocrange.first; iter != assocrange.second; ++iter)
     {
       assoctmp->SetClusterTrackAssoc(iter->first, iter->second);
+    }
+  }
+
+  TrkrHitTruthAssocTmp *hittruthassoctmp = findNode::getClass<TrkrHitTruthAssocTmp>(topNode,trkhitassoctmpname);
+  TrkrHitTruthAssoc *hittruthassoc = findNode::getClass<TrkrHitTruthAssoc>(topNode,trkhitassocname);
+  if (hittruthassoctmp && hittruthassoc)
+  {
+    TrkrHitTruthAssoc::ConstRange ran = hittruthassoc->GetAssoc();
+    for (TrkrHitTruthAssoc::ConstIterator iter = ran.first; iter != ran.second; ++iter)
+    {
+      hittruthassoctmp->addAssoc(iter->first, iter->second.first, iter->second.second);
     }
   }
   return Fun4AllReturnCodes::EVENT_OK;

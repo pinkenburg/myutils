@@ -12,6 +12,7 @@ R__LOAD_LIBRARY(libfixdstpass1.so)
 
 void run_pass1(const std::string &infile, const int evts=100)
 {
+//  gSystem->Load("libphhepmc.so");
   gSystem->Load("libg4dst.so");
   gSystem->Load("libkfparticle_sphenix_io.so");
   Fun4AllServer* se = Fun4AllServer::instance();
@@ -23,10 +24,13 @@ void run_pass1(const std::string &infile, const int evts=100)
   Fun4AllInputManager *in = new Fun4AllDstInputManager("DSTin");
   se->registerInputManager(in);
   Fun4AllOutputManager *out = new Fun4AllDstOutputManager("DSTout","/sphenix/user/pinkenbu/test2.root");
+
+  out->StripNode("AssocInfoContainer");
   out->StripNode("TRKR_HITSET");
   out->StripNode("TRKR_HITTRUTHASSOC");
   out->StripNode("TRKR_CLUSTERHITASSOC");
   out->StripNode("TRKR_CLUSTER");
+
   se->registerOutputManager(out);
   se->fileopen("DSTin",infile);
   se->run(evts);
