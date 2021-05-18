@@ -2,6 +2,7 @@
 #include "DumpObject.h"
 
 #include "DumpAssocInfoContainer.h"
+#include "DumpAssocInfoContainerTmp.h"
 #include "DumpBbcVertexMap.h"
 #include "DumpCaloTriggerInfo.h"
 #include "DumpEventHeader.h"
@@ -179,6 +180,10 @@ int PHNodeDump::AddDumpObject(const string &NodeName, PHNode *node)
       if (tmp->InheritsFrom("AssocInfoContainer"))
       {
         newdump = new DumpAssocInfoContainer(NodeName);
+      }
+      else if (tmp->InheritsFrom("AssocInfoContainerTmp"))
+      {
+        newdump = new DumpAssocInfoContainerTmp(NodeName);
       }
       else if (tmp->InheritsFrom("BbcVertexMap"))
       {
