@@ -11,6 +11,7 @@ AM_LDFLAGS = \
   -L$(OFFLINE_MAIN)/lib64
 
 pkginclude_HEADERS = \
+  AssocInfoContainerTmp.h \
   TrkrClusterContainerTmp.h \
   TrkrClusterHitAssocTmp.h \
   TrkrHitTruthAssocTmp.h \
@@ -20,6 +21,7 @@ pkginclude_HEADERS = \
   fixdstpass1.h
 
 ROOTDICTS = \
+  AssocInfoContainerTmp_Dict.cc \
   TrkrClusterContainerTmp_Dict.cc \
   TrkrClusterHitAssocTmp_Dict.cc \
   TrkrHitTruthAssocTmp_Dict.cc \
@@ -29,6 +31,7 @@ ROOTDICTS = \
 
 pcmdir = $(libdir)
 nobase_dist_pcm_DATA = \
+  AssocInfoContainerTmp_Dict_rdict.pcm \
   TrkrClusterContainerTmp_Dict_rdict.pcm \
   TrkrClusterHitAssocTmp_Dict_rdict.pcm \
   TrkrHitTruthAssocTmp_Dict_rdict.pcm \
@@ -40,6 +43,8 @@ lib_LTLIBRARIES = \
   libfixdstpass1.la
 
 libfixdstpass1_la_SOURCES = \
+  AssocInfoContainerTmp.cc \
+  AssocInfoContainerTmp_Dict.cc \
   fixdstpass1.cc \
   TrkrClusterContainerTmp.cc \
   TrkrClusterContainerTmp_Dict.cc \
