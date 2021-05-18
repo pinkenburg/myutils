@@ -40,7 +40,8 @@ class fixdstpass1 : public SubsysReco
   int End(PHCompositeNode *topNode) override;
 
  private:
-
+  std::string assocname = "AssocInfoContainer";
+  std::string assoctmpname = "AssocInfoContainer_TMP";
   std::string trkhitnodename = "TRKR_HITSET";
   std::string trkhittmpnodename = "TRKR_HITSET_TMP";
   std::string trkhitassocname = "TRKR_HITTRUTHASSOC";
