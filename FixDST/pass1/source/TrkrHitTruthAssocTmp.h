@@ -65,6 +65,8 @@ public:
    */
   void  getG4Hits(const TrkrDefs::hitsetkey hitsetkey, const unsigned int hidx, MMap &temp_map);
 
+  ConstRange GetAssoc() {return make_pair(m_map.begin(), m_map.end());}
+
 private:
   MMap m_map;
   ClassDef(TrkrHitTruthAssocTmp, 1);

@@ -4,13 +4,22 @@
 #include "TrkrHitTmp.h"
 #include "TrkrHitSetTmp.h"
 #include "TrkrHitSetContainerTmp.h"
+#include "TrkrHitTruthAssocTmp.h"
+
 #include "TrkrClusterHitAssocTmp.h"
+#include "TrkrClusterContainerTmp.h"
+
+#include <trackbase/TrkrCluster.h>
 
 #include <trackbase/TrkrHit.h>
 #include <trackbase/TrkrHitSet.h>
 #include <trackbase/TrkrHitSetContainer.h>
 
+#include <trackbase/TrkrClusterContainer.h>
+
 #include <trackbase/TrkrClusterHitAssoc.h>
+
+#include <trackbase/TrkrHitTruthAssoc.h>
 
 #include <fun4all/Fun4AllReturnCodes.h>
 
@@ -49,6 +58,21 @@ int fixdstpass1::Init(PHCompositeNode *topNode)
     auto newNode = new PHIODataNode<PHObject>(hitsetcontainertmp, trkhittmpnodename, "PHObject");
     dstNode->addNode(newNode);
   }
+  TrkrHitTruthAssocTmp *hittruthassoctmp = findNode::getClass<TrkrHitTruthAssocTmp>(topNode,trkhitassoctmpname);
+  if (!hittruthassoctmp)
+  {
+    hittruthassoctmp = new TrkrHitTruthAssocTmp();
+    auto newNode = new PHIODataNode<PHObject>(hittruthassoctmp,trkhitassoctmpname, "PHObject");
+    dstNode->addNode(newNode);
+  }
+
+  TrkrClusterContainerTmp *clustercon = findNode::getClass<TrkrClusterContainerTmp>(topNode,trkclusassoctmpname);
+if (!clustercon)
+{
+  clustercon = new TrkrClusterContainerTmp();
+  auto newNode = new PHIODataNode<PHObject>(clustercon,trkclusassoctmpname, "PHObject");
+dstNode->addNode(newNode);
+}
   TrkrClusterHitAssocTmp *clusterhitassoc = findNode::getClass<TrkrClusterHitAssocTmp>(topNode,trkclusassoctmpname);
   if (!clusterhitassoc)
   {
@@ -71,6 +95,17 @@ int fixdstpass1::InitRun(PHCompositeNode *topNode)
 //____________________________________________________________________________..
 int fixdstpass1::process_event(PHCompositeNode *topNode)
 {
+TrkrClusterContainerTmp *clustercontmp = findNode::getClass<TrkrClusterContainerTmp>(topNode,trkclusassoctmpname);
+TrkrClusterContainer *clustercon = findNode::getClass<TrkrClusterContainer>(topNode,trkclusassocname);
+if (clustercontmp && clustercon)
+{
+  TrkrClusterContainer::ConstRange rng = clustercon->getClusters();
+  for (TrkrClusterContainer::ConstIterator iter = rng.first; iter != rng.second; ++iter)
+  {
+    TrkrCluster *clus = dynamic_cast<TrkrCluster *>((iter->second)->CloneMe());
+    clustercontmp->addClusterSpecifyKey(clus->getClusKey(),clus);
+  }
+}
   TrkrClusterHitAssocTmp *clusterhitassoctmp = findNode::getClass<TrkrClusterHitAssocTmp>(topNode,trkclusassoctmpname);
   TrkrClusterHitAssoc *clusterhitassoc = findNode::getClass<TrkrClusterHitAssoc>(topNode,trkclusassocname);
   if (clusterhitassoctmp && clusterhitassoc)
