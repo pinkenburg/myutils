@@ -14,6 +14,8 @@ class AssocInfoContainer : public PHObject
 {
  public:
   typedef std::multimap<TrkrDefs::cluskey, unsigned int> ClusterTrackMap;
+  typedef ClusterTrackMap::const_iterator ConstIterator;
+  typedef std::pair<ConstIterator, ConstIterator> ConstRange;
 
   AssocInfoContainer();
   virtual ~AssocInfoContainer();
@@ -36,6 +38,8 @@ class AssocInfoContainer : public PHObject
     }
     return ret;
   }
+
+  ConstRange GetAssoc() {return make_pair(_map_cluster_id_track_id.begin(), _map_cluster_id_track_id.end());}
 
  private:
   ClusterTrackMap _map_cluster_id_track_id;
