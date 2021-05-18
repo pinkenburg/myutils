@@ -120,4 +120,3 @@ TrkrHitTruthAssocTmp::getG4Hits(const TrkrDefs::hitsetkey hitsetkey, const unsig
 
   //return std::make_pair(temp_map.begin(), temp_map.end());
 }
-
