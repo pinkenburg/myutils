@@ -1,8 +1,8 @@
-#include "DumpAssocInfoContainer.h"
+#include "DumpAssocInfoContainerTmp.h"
 
 #include <phool/PHIODataNode.h>
 
-#include <trackreco/AssocInfoContainer.h>
+#include <fixdstpass1/AssocInfoContainerTmp.h>
 
 #include <map>
 #include <ostream>
@@ -11,17 +11,17 @@
 
 using namespace std;
 
-typedef PHIODataNode<AssocInfoContainer> MyNode_t;
+typedef PHIODataNode<AssocInfoContainerTmp> MyNode_t;
 
-DumpAssocInfoContainer::DumpAssocInfoContainer(const string &NodeName)
+DumpAssocInfoContainerTmp::DumpAssocInfoContainerTmp(const string &NodeName)
   : DumpObject(NodeName)
 {
   return;
 }
 
-int DumpAssocInfoContainer::process_Node(PHNode *myNode)
+int DumpAssocInfoContainerTmp::process_Node(PHNode *myNode)
 {
-  AssocInfoContainer *associnfocontainer = nullptr;
+  AssocInfoContainerTmp *associnfocontainer = nullptr;
   MyNode_t *thisNode = static_cast<MyNode_t *>(myNode);
   if (thisNode)
   {

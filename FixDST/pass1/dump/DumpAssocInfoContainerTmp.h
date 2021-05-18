@@ -1,5 +1,5 @@
-#ifndef NODEDUMP_DUMPASSOCINFOCONTAINER_H
-#define NODEDUMP_DUMPASSOCINFOCONTAINER_H
+#ifndef NODEDUMP_DUMPASSOCINFOCONTAINERTMP_H
+#define NODEDUMP_DUMPASSOCINFOCONTAINERTMP_H
 
 #include "DumpObject.h"
 
@@ -7,11 +7,11 @@
 
 class PHNode;
 
-class DumpAssocInfoContainer : public DumpObject
+class DumpAssocInfoContainerTmp : public DumpObject
 {
  public:
-  DumpAssocInfoContainer(const std::string &NodeName);
-  virtual ~DumpAssocInfoContainer() {}
+  DumpAssocInfoContainerTmp(const std::string &NodeName);
+  virtual ~DumpAssocInfoContainerTmp() {}
 
  protected:
   int process_Node(PHNode *mynode);

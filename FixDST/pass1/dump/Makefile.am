@@ -15,6 +15,7 @@ pkginclude_HEADERS = \
 libphnodedump_la_SOURCES = \
   Dumper.cc \
   DumpAssocInfoContainer.cc \
+  DumpAssocInfoContainerTmp.cc \
   DumpBbcVertexMap.cc \
   DumpCaloTriggerInfo.cc \
   DumpEventHeader.cc \
