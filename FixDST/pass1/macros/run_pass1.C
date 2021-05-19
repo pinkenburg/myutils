@@ -26,10 +26,10 @@ void run_pass1(const std::string &infile, const int evts=100)
   Fun4AllOutputManager *out = new Fun4AllDstOutputManager("DSTout","/sphenix/user/pinkenbu/test2.root");
 
   out->StripNode("AssocInfoContainer");
+  out->StripNode("TRKR_CLUSTER");
+  out->StripNode("TRKR_CLUSTERHITASSOC");
   out->StripNode("TRKR_HITSET");
   out->StripNode("TRKR_HITTRUTHASSOC");
-  out->StripNode("TRKR_CLUSTERHITASSOC");
-  out->StripNode("TRKR_CLUSTER");
 
   se->registerOutputManager(out);
   se->fileopen("DSTin",infile);
