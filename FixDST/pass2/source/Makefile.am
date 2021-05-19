@@ -11,21 +11,30 @@ AM_LDFLAGS = \
   -L$(OFFLINE_MAIN)/lib64
 
 pkginclude_HEADERS = \
+  AssocInfoContainerTmp.h \
+  TrkrClusterContainerTmp.h \
   TrkrClusterHitAssocTmp.h \
+  TrkrHitTruthAssocTmp.h \
   TrkrHitTmp.h \
   TrkrHitSetTmp.h \
   TrkrHitSetContainerTmp.h \
   fixdstpass2.h
 
 ROOTDICTS = \
+  AssocInfoContainerTmp_Dict.cc \
+  TrkrClusterContainerTmp_Dict.cc \
   TrkrClusterHitAssocTmp_Dict.cc \
+  TrkrHitTruthAssocTmp_Dict.cc \
   TrkrHitTmp_Dict.cc \
   TrkrHitSetTmp_Dict.cc \
   TrkrHitSetContainerTmp_Dict.cc
 
 pcmdir = $(libdir)
 nobase_dist_pcm_DATA = \
+  AssocInfoContainerTmp_Dict_rdict.pcm \
+  TrkrClusterContainerTmp_Dict_rdict.pcm \
   TrkrClusterHitAssocTmp_Dict_rdict.pcm \
+  TrkrHitTruthAssocTmp_Dict_rdict.pcm \
   TrkrHitTmp_Dict_rdict.pcm \
   TrkrHitSetTmp_Dict_rdict.pcm \
   TrkrHitSetContainerTmp_Dict_rdict.pcm
@@ -34,9 +43,15 @@ lib_LTLIBRARIES = \
   libfixdstpass2.la
 
 libfixdstpass2_la_SOURCES = \
+  AssocInfoContainerTmp.cc \
+  AssocInfoContainerTmp_Dict.cc \
   fixdstpass2.cc \
+  TrkrClusterContainerTmp.cc \
+  TrkrClusterContainerTmp_Dict.cc \
   TrkrClusterHitAssocTmp.cc \
   TrkrClusterHitAssocTmp_Dict.cc \
+  TrkrHitTruthAssocTmp.cc \
+  TrkrHitTruthAssocTmp_Dict.cc \
   TrkrHitTmp.cc \
   TrkrHitTmp_Dict.cc \
   TrkrHitSetTmp.cc \
@@ -47,7 +62,8 @@ libfixdstpass2_la_SOURCES = \
 libfixdstpass2_la_LIBADD = \
   -lphool \
   -lSubsysReco \
-  -ltrack_io
+  -ltrack_io \
+  -ltrack_reco_io
 
 # Rule for generating table CINT dictionaries.
 %_Dict.cc: %.h %LinkDef.h

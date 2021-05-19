@@ -50,7 +50,7 @@ TrkrClusterHitAssocTmp::addAssoc(TrkrDefs::cluskey ckey, unsigned int hidx)
   m_map.insert(std::make_pair(ckey, hidx));
 }
 
-TrkrClusterHitAssocTmp::ConstRange 
+TrkrClusterHitAssocTmp::ConstRange
 TrkrClusterHitAssocTmp::getHits(TrkrDefs::cluskey ckey)
 {
   ConstRange retpair;
@@ -59,7 +59,7 @@ TrkrClusterHitAssocTmp::getHits(TrkrDefs::cluskey ckey)
   return retpair;
 }
 
-TrkrClusterHitAssocTmp::ConstRange 
+TrkrClusterHitAssocTmp::ConstRange
 TrkrClusterHitAssocTmp::getHits()
 {
   ConstRange retpair;

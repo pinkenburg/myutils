@@ -41,8 +41,14 @@ class fixdstpass2 : public SubsysReco
 
  private:
 
+  std::string assocname = "AssocInfoContainer";
+  std::string assoctmpname = "AssocInfoContainer_TMP";
   std::string trkhitnodename = "TRKR_HITSET";
   std::string trkhittmpnodename = "TRKR_HITSET_TMP";
+  std::string trkhitassocname = "TRKR_HITTRUTHASSOC";
+  std::string trkhitassoctmpname = "TRKR_HITTRUTHASSOC_TMP";
+  std::string trkcluscontname = "TRKR_CLUSTER";
+  std::string trkclusconttmpname = "TRKR_CLUSTER_TMP";
   std::string trkclusassocname = "TRKR_CLUSTERHITASSOC";
   std::string trkclusassoctmpname = "TRKR_CLUSTERHITASSOC_TMP";
 };
