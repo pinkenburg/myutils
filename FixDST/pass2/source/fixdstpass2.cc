@@ -15,7 +15,7 @@
 #include <trackbase/TrkrClusterContainerv1.h>
 
 #include <trackbase/TrkrHitv1.h>
-#include <trackbase/TrkrHitSet.h>
+#include <trackbase/TrkrHitSetv1.h>
 #include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrHitSetContainerv1.h>
 
@@ -63,12 +63,19 @@ int fixdstpass2::Init(PHCompositeNode *topNode)
     dstNode->addNode(trkNode);
   }
 
+  PHCompositeNode *svtxNode = dynamic_cast<PHCompositeNode *>(dstiter.findFirst("PHCompositeNode","SVTX"));
+  if (!svtxNode)
+  {
+    svtxNode = new PHCompositeNode("SVTX");
+    dstNode->addNode(svtxNode);
+  }
+
   AssocInfoContainer *assoc = findNode::getClass<AssocInfoContainer>(topNode,assocname);
   if (! assoc)
   {
     assoc = new AssocInfoContainerv1();
     auto newNode = new PHIODataNode<PHObject>(assoc, assocname, "PHObject");
-    trkNode->addNode(newNode);
+    svtxNode->addNode(newNode);
 
   }
 
@@ -165,7 +172,7 @@ if (clustercontmp && clustercon)
 //      TrkrDefs::hitsetkey node_hitsetkey = iter->first;
       TrkrHitSetTmp *hitsettmp = iter->second;
 //      std::cout << hitset << node_hitsetkey << std::endl;
-      TrkrHitSet *hitset = new TrkrHitSet();
+      TrkrHitSet *hitset = new TrkrHitSetv1();
       hitset->setHitSetKey(hitsettmp->getHitSetKey());
       hitsetcontainer->addHitSetSpecifyKey(hitset->getHitSetKey(),hitset);
       TrkrHitSetTmp::ConstRange single_hit_range = hitsettmp->getHits();
