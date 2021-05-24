@@ -44,7 +44,7 @@ fixdstpass2::~fixdstpass2()
 }
 
 //____________________________________________________________________________..
-int fixdstpass2::Init(PHCompositeNode *topNode)
+int fixdstpass2::InitRun(PHCompositeNode *topNode)
 {
   PHNodeIterator iter(topNode);
 
@@ -70,53 +70,72 @@ int fixdstpass2::Init(PHCompositeNode *topNode)
     dstNode->addNode(svtxNode);
   }
 
-  AssocInfoContainer *assoc = findNode::getClass<AssocInfoContainer>(topNode,assocname);
-  if (! assoc)
+  AssocInfoContainerTmp *assoctmp = findNode::getClass<AssocInfoContainerTmp>(topNode,assoctmpname);
+  if (assoctmp)
   {
-    assoc = new AssocInfoContainerv1();
-    auto newNode = new PHIODataNode<PHObject>(assoc, assocname, "PHObject");
-    svtxNode->addNode(newNode);
+    AssocInfoContainer *assoc = findNode::getClass<AssocInfoContainer>(topNode,assocname);
+    if (! assoc)
+    {
+      assoc = new AssocInfoContainerv1();
+      auto newNode = new PHIODataNode<PHObject>(assoc, assocname, "PHObject");
+      svtxNode->addNode(newNode);
 
+    }
   }
 
-  TrkrClusterContainer *clustercon = findNode::getClass<TrkrClusterContainer>(topNode,trkcluscontname);
-if (!clustercon)
-{
-  clustercon = new TrkrClusterContainerv1();
-  auto newNode = new PHIODataNode<PHObject>(clustercon,trkcluscontname, "PHObject");
-trkNode->addNode(newNode);
-}
-
-  TrkrClusterHitAssoc *clusterhitassoc = findNode::getClass<TrkrClusterHitAssoc>(topNode,trkclusassocname);
-  if (!clusterhitassoc)
+  TrkrClusterContainerTmp *clustercontmp = findNode::getClass<TrkrClusterContainerTmp>(topNode,trkclusconttmpname);
+  if (clustercontmp)
   {
-    clusterhitassoc = new TrkrClusterHitAssocv1();
-    auto newNode = new PHIODataNode<PHObject>(clusterhitassoc, trkclusassocname, "PHObject");
-    trkNode->addNode(newNode);
-
+    TrkrClusterContainer *clustercon = findNode::getClass<TrkrClusterContainer>(topNode,trkcluscontname);
+    if (!clustercon)
+    {
+      clustercon = new TrkrClusterContainerv1();
+      auto newNode = new PHIODataNode<PHObject>(clustercon,trkcluscontname, "PHObject");
+      trkNode->addNode(newNode);
+    }
   }
 
-  TrkrHitSetContainer *hitsetcontainer = findNode::getClass<TrkrHitSetContainer>(topNode,trkhitnodename);
-  if (! hitsetcontainer)
+  TrkrClusterHitAssocTmp *clusterhitassoctmp = findNode::getClass<TrkrClusterHitAssocTmp>(topNode,trkclusassoctmpname);
+  if (clusterhitassoctmp)
   {
-    hitsetcontainer = new TrkrHitSetContainerv1();
-    auto newNode = new PHIODataNode<PHObject>(hitsetcontainer, trkhitnodename, "PHObject");
-    trkNode->addNode(newNode);
+    TrkrClusterHitAssoc *clusterhitassoc = findNode::getClass<TrkrClusterHitAssoc>(topNode,trkclusassocname);
+    if (!clusterhitassoc)
+    {
+      clusterhitassoc = new TrkrClusterHitAssocv1();
+      auto newNode = new PHIODataNode<PHObject>(clusterhitassoc, trkclusassocname, "PHObject");
+      trkNode->addNode(newNode);
+
+    }
   }
 
-  TrkrHitTruthAssoc *hittruthassoc = findNode::getClass<TrkrHitTruthAssoc>(topNode,trkhitassocname);
-  if (!hittruthassoc)
+  TrkrHitSetContainerTmp *hitsetcontainertmp = findNode::getClass<TrkrHitSetContainerTmp>(topNode,trkhittmpnodename);
+  if (hitsetcontainertmp)
   {
-    hittruthassoc = new TrkrHitTruthAssocv1();
-    auto newNode = new PHIODataNode<PHObject>(hittruthassoc,trkhitassocname, "PHObject");
-    trkNode->addNode(newNode);
+    TrkrHitSetContainer *hitsetcontainer = findNode::getClass<TrkrHitSetContainer>(topNode,trkhitnodename);
+    if (! hitsetcontainer)
+    {
+      hitsetcontainer = new TrkrHitSetContainerv1();
+      auto newNode = new PHIODataNode<PHObject>(hitsetcontainer, trkhitnodename, "PHObject");
+      trkNode->addNode(newNode);
+    }
   }
 
+  TrkrHitTruthAssocTmp *hittruthassoctmp = findNode::getClass<TrkrHitTruthAssocTmp>(topNode,trkhitassoctmpname);
+  if (hittruthassoctmp)
+  {
+    TrkrHitTruthAssoc *hittruthassoc = findNode::getClass<TrkrHitTruthAssoc>(topNode,trkhitassocname);
+    if (!hittruthassoc)
+    {
+      hittruthassoc = new TrkrHitTruthAssocv1();
+      auto newNode = new PHIODataNode<PHObject>(hittruthassoc,trkhitassocname, "PHObject");
+      trkNode->addNode(newNode);
+    }
+  }
   return Fun4AllReturnCodes::EVENT_OK;
 }
 
 //____________________________________________________________________________..
-int fixdstpass2::InitRun(PHCompositeNode *topNode)
+int fixdstpass2::Init(PHCompositeNode *topNode)
 {
   
 
