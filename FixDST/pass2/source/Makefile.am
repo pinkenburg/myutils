@@ -60,6 +60,7 @@ libfixdstpass2_la_SOURCES = \
   TrkrHitSetContainerTmp_Dict.cc
 
 libfixdstpass2_la_LIBADD = \
+  -lmicromegas_io \
   -lphool \
   -lSubsysReco \
   -ltrack_io \

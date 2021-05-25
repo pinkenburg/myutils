@@ -25,6 +25,10 @@
 #include <trackreco/AssocInfoContainer.h>
 #include <trackreco/AssocInfoContainerv1.h>
 
+#include <g4detectors/PHG4CylinderGeom.h>
+#include <g4detectors/PHG4CylinderGeomContainer.h>
+#include <micromegas/CylinderGeomMicromegas.h>
+
 #include <fun4all/Fun4AllReturnCodes.h>
 
 #include <phool/PHCompositeNode.h>
@@ -131,6 +135,33 @@ int fixdstpass2::InitRun(PHCompositeNode *topNode)
       trkNode->addNode(newNode);
     }
   }
+
+  PHCompositeNode *runNode = dynamic_cast<PHCompositeNode *>(iter.findFirst("PHCompositeNode", "RUN"));
+  if (!runNode)
+  {
+    std::cout << PHWHERE << "RUN Node missing, doing nothing." << std::endl;
+    exit(1);
+  }
+
+  PHG4CylinderGeomContainer *mmsgeom = findNode::getClass<PHG4CylinderGeomContainer>(runNode,micromegasgeomname);
+  if (mmsgeom)
+  {
+    PHG4CylinderGeomContainer *mmsgeomfull = findNode::getClass<PHG4CylinderGeomContainer>(runNode,micromegasgeomfullname);
+    if (! mmsgeomfull)
+    {
+      mmsgeomfull = new PHG4CylinderGeomContainer();
+      PHG4CylinderGeomContainer::ConstRange rng = mmsgeom->get_begin_end();
+      for( auto iter = rng.first; iter != rng.second; ++iter )
+      {
+	const auto layer = iter->first;
+	const auto cylinder = dynamic_cast<CylinderGeomMicromegas*>(iter->second);
+	mmsgeomfull->AddLayerGeom( layer, new CylinderGeomMicromegas( *cylinder ) );
+      }
+      auto newNode = new PHIODataNode<PHObject>(mmsgeomfull,micromegasgeomfullname, "PHObject");
+      runNode->addNode(newNode);
+    }
+  }
+
   return Fun4AllReturnCodes::EVENT_OK;
 }
 

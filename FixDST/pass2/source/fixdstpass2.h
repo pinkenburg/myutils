@@ -51,6 +51,9 @@ class fixdstpass2 : public SubsysReco
   std::string trkclusconttmpname = "TRKR_CLUSTER_TMP";
   std::string trkclusassocname = "TRKR_CLUSTERHITASSOC";
   std::string trkclusassoctmpname = "TRKR_CLUSTERHITASSOC_TMP";
+
+  std::string micromegasgeomname = "CYLINDERGEOM_MICROMEGAS";
+  std::string micromegasgeomfullname = "CYLINDERGEOM_MICROMEGAS_FULL";
 };
 
 #endif // FIXDSTPASS2_H
