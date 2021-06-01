@@ -11,6 +11,10 @@
 #include "TrkrClusterHitAssocTmp.h"
 #include "TrkrClusterContainerTmp.h"
 
+#include <mvtx/MvtxHit.h>
+#include <intt/InttHit.h>
+#include <tpc/TpcHit.h>
+
 #include <trackbase/TrkrCluster.h>
 
 #include <trackbase/TrkrHit.h>
@@ -190,9 +194,38 @@ int fixdstpass1::process_event(PHCompositeNode *topNode)
       {
 	TrkrDefs::hitkey key = single_hit_iter->first;
 	TrkrHit *trkhit = single_hit_iter->second;
-	  TrkrHitTmp *trkhittmp = new TrkrHitTmp();
+        TrkrHitTmp *trkhittmp = new TrkrHitTmp();
 	trkhittmp->addEnergy(trkhit->getEnergy());
         trkhittmp->setAdc(trkhit->getAdc());
+
+        TpcHit *tpchit = dynamic_cast<TpcHit *>(trkhit);
+	if (tpchit)
+	{
+//	  std::cout << std::hex << key <<  std::dec << " is tpc hit" << std::endl;
+	  trkhittmp->set_hittype(TrkrHitTmp::HitType::tpchit);
+	}
+	else
+	{
+          InttHit *intthit = dynamic_cast<InttHit *>(trkhit);
+	  if (intthit)
+	  {
+//	    std::cout << std::hex << key <<  std::dec << " is intt hit" << std::endl;
+	    trkhittmp->set_hittype(TrkrHitTmp::HitType::intthit);
+	  }
+	  else
+	  {
+	    MvtxHit *mvtxhit = dynamic_cast<MvtxHit *>(trkhit);
+	    if (mvtxhit)
+	    {
+//	    std::cout << std::hex << key <<  std::dec << " is mvtx hit" << std::endl;
+	      trkhittmp->set_hittype(TrkrHitTmp::HitType::mvtxhit);
+	    }
+	    else
+	    {
+	      trkhittmp->set_hittype(TrkrHitTmp::HitType::micromegashit);
+	    }
+	  }
+	}
 	hitsettmp->addHitSpecificKey(key, trkhittmp);
       }
 

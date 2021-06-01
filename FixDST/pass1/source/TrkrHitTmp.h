@@ -21,6 +21,8 @@
 class TrkrHitTmp : public PHObject
 {
  public:
+  enum HitType {intthit = 0, mvtxhit = 1, tpchit = 2, micromegashit = 3};
+
   //! ctor
   TrkrHitTmp(); 
 
@@ -38,10 +40,12 @@ class TrkrHitTmp : public PHObject
   double getEnergy() {return m_edep;}
   void setAdc(const unsigned int adc) {m_adc = adc;}
   unsigned int getAdc() { return m_adc;}
-
+  void set_hittype(const int i) {m_HitType = i;}
+  int get_hittype() const {return m_HitType;}
  protected:
-  double m_edep;
-  unsigned int m_adc;
+  double m_edep = 0.;
+  unsigned int m_adc = 0;
+  int m_HitType = -1;
   ClassDef(TrkrHitTmp, 1);
 };
 

@@ -62,6 +62,9 @@ libfixdstpass1_la_SOURCES = \
 libfixdstpass1_la_LIBADD = \
   -lphool \
   -lSubsysReco \
+  -lintt \
+  -lmvtx \
+  -ltpc \
   -ltrack_io \
   -ltrack_reco_io
 

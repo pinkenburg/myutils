@@ -45,6 +45,7 @@ int DumpTrkrHitSetContainerTmp::process_Node(PHNode *myNode)
         *fout << "id: " << tsetiter->first << endl;
         *fout << "edep: " << hit->getEnergy() << endl;
         *fout << "adc: " << hit->getAdc() << endl;
+        *fout << "hittype: " << hit->get_hittype() << endl;
       }
     }
   }
