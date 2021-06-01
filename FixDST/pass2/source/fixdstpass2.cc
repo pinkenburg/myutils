@@ -14,7 +14,7 @@
 #include <trackbase/TrkrClusterv1.h>
 #include <trackbase/TrkrClusterContainerv1.h>
 
-#include <trackbase/TrkrHitv1.h>
+#include <trackbase/TrkrHitv2.h>
 #include <trackbase/TrkrHitSetv1.h>
 #include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrHitSetContainerv1.h>
@@ -232,9 +232,17 @@ if (clustercontmp && clustercon)
       {
 	TrkrDefs::hitkey key = single_hit_iter->first;
 	TrkrHitTmp *trkhittmp = single_hit_iter->second;
-	TrkrHit *trkhit = new TrkrHitv1();
-	trkhit->addEnergy(trkhittmp->getEnergy());
-        trkhit->setAdc(trkhittmp->getAdc());
+	TrkrHit *trkhit = new TrkrHitv2();
+        double old_energy = trkhittmp->getEnergy();
+	if (trkhittmp->get_hittype() == TrkrHitTmp::HitType::intthit)
+	{
+	  old_energy *= TrkrDefs::InttEnergyScaleup;
+	}
+	else if (trkhittmp->get_hittype() == TrkrHitTmp::HitType::mvtxhit)
+	{
+	  old_energy *= TrkrDefs::MvtxEnergyScaleup;
+	}
+	trkhit->addEnergy(old_energy);
 	hitset->addHitSpecificKey(key, trkhit);
       }
 
